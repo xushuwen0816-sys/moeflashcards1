@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#fff0f5" />
+    
+    <!-- iOS Specific Settings -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="MoeCards" />
+    
+    <!-- iOS Icon -->
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f431.png" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json" />
+    
+    <title>MoeFlashcards</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Quicksand"', '"Noto Sans SC"', 'sans-serif'],
+            },
+            colors: {
+              moe: {
+                50: '#fff0f5', // Lavender Blush
+                100: '#ffe4e1', // Misty Rose
+                200: '#ffb7b2', // Pastel Red
+                300: '#ffdac1', // Peach
+                400: '#e2f0cb', // Dirty White/Green
+                500: '#b5ead7', // Magic Mint
+                600: '#c7ceea', // Periwinkle
+                text: '#4a4a4a',
+                primary: '#ff9a9e',
+              }
+            },
+            borderRadius: {
+              '4xl': '2rem',
+              '5xl': '2.5rem',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #fff0f5;
+        color: #4a4a4a;
+        -webkit-font-smoothing: antialiased;
+        overscroll-behavior-y: none; /* Prevent pull-to-refresh */
+        
+        /* iOS App-like Experience Optimizations */
+        min-height: 100dvh; 
+        -webkit-tap-highlight-color: transparent; 
+        
+        /* Critical for PWA: Respect the notch/home bar */
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+      }
+      /* Hide scrollbar for clean UI */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      
+      /* 3D Flip Utilities */
+      .perspective-1000 {
+        perspective: 1000px;
+      }
+      .transform-style-3d {
+        transform-style: preserve-3d;
+      }
+      .backface-hidden {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
+      .rotate-y-180 {
+        transform: rotateY(180deg);
+      }
+
+      /* Swipe Animations */
+      .swipe-left {
+        transform: translateX(-150%) rotate(-30deg) !important;
+        opacity: 0;
+      }
+      .swipe-right {
+        transform: translateX(150%) rotate(30deg) !important;
+        opacity: 0;
+      }
+      .card-transition {
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      }
+      
+      /* Smooth fade in */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-in {
+        animation: fadeIn 0.4s ease-out forwards;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
+    <script>
+      // Clean up ALL Service Workers to fix 404/caching issues immediately
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+             registration.unregister().then(function() {
+                // Force reload if we unregister something to clear the cache
+                // window.location.reload(); 
+                // Commented out to avoid loop, but conceptually we want a clean slate
+             });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
