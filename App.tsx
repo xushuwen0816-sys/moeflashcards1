@@ -316,19 +316,19 @@ const HomeScreen: React.FC<{
   const currentFolderName = folders.find(f => f.id === currentFolderId)?.name || '未知';
 
   return (
-    <div className="h-full overflow-y-auto no-scrollbar pb-6">
-      <div className="p-6 pt-12 md:p-12 md:max-w-7xl md:mx-auto md:min-h-[90vh] md:flex md:flex-col md:justify-center">
+    <div className="h-full overflow-y-auto no-scrollbar bg-moe-50 pb-safe">
+      <div className="p-6 md:p-8 w-full max-w-6xl mx-auto md:min-h-screen md:flex md:flex-col md:justify-center">
         
         {/* Header - Always visible */}
-        <div className="flex justify-between items-start mb-6">
+        <div className="flex justify-between items-start mb-6 md:mb-10">
            {/* Mascot Dialogue Area */}
           <div className="flex items-start gap-4 flex-1">
              <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-md text-3xl flex-shrink-0 border-2 border-moe-50 z-10 relative">
                 🐱
                 <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-400 border-2 border-white rounded-full"></div>
              </div>
-             <div className="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-moe-50 relative -mt-2 animate-in fade-in slide-in-from-left-2 duration-500">
-                <h1 className="text-lg font-bold text-moe-text mb-1">嗨, {user}!</h1>
+             <div className="bg-white p-5 rounded-3xl rounded-tl-none shadow-sm relative -mt-2 animate-in fade-in slide-in-from-left-2 duration-500 max-w-xl">
+                <h1 className="text-xl font-bold text-moe-text mb-1">嗨, {user}!</h1>
                 <p className="text-gray-500 text-sm leading-relaxed">
                    {getGreeting(user, dueCount)}
                 </p>
@@ -336,26 +336,27 @@ const HomeScreen: React.FC<{
           </div>
           <button 
             onClick={onOpenSettings} 
-            className="p-3 bg-white rounded-2xl shadow-sm text-gray-400 hover:text-moe-primary transition-colors hover:rotate-90 duration-300"
+            className="p-3 bg-white rounded-2xl shadow-sm text-gray-400 hover:text-moe-primary transition-colors hover:rotate-90 duration-300 ml-4"
           >
             <SettingsIcon size={24} />
           </button>
         </div>
 
-        <div className="flex flex-col md:flex-row md:items-stretch md:gap-8">
+        {/* Dashboard Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
           
-          {/* Left Column (Tablet): Stats & Folders */}
-          <div className="w-full md:w-5/12 space-y-6 flex flex-col">
-            {/* Folder List */}
-            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+          {/* Left Column: Folders & Stats */}
+          <div className="md:col-span-5 flex flex-col gap-4 h-full">
+            {/* Folder Tabs */}
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
               {folders.map(folder => (
                 <button
                   key={folder.id}
                   onClick={() => onSwitchFolder(folder.id)}
                   className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
                     currentFolderId === folder.id 
-                      ? 'bg-moe-text text-white shadow-md transform -translate-y-0.5' 
-                      : 'bg-white text-gray-400 hover:bg-gray-50'
+                      ? 'bg-moe-text text-white shadow-md' 
+                      : 'bg-white/60 text-gray-500 hover:bg-white'
                   }`}
                 >
                   {folder.name}
@@ -369,78 +370,77 @@ const HomeScreen: React.FC<{
               </button>
             </div>
 
-            {/* Stats Card */}
+            {/* Big Stats Card */}
             <div 
               onClick={() => onNavigate(ViewState.FOLDER_DETAIL)}
-              className="bg-white p-6 md:p-8 rounded-4xl shadow-xl shadow-moe-100/50 relative overflow-hidden group cursor-pointer active:scale-95 transition-all flex-1 flex flex-col justify-end border border-white hover:border-moe-100"
+              className="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-moe-100/50 relative overflow-hidden group cursor-pointer active:scale-95 transition-all flex-1 min-h-[240px] flex flex-col justify-end border-2 border-white hover:border-moe-100"
             >
-              <div className="absolute -right-4 -top-4 w-32 h-32 bg-moe-50 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
-              <div className="absolute right-10 top-10 text-moe-100 opacity-20 group-hover:opacity-40 transition-opacity">
-                  <FolderIcon size={80} />
+              <div className="absolute -right-8 -top-8 w-48 h-48 bg-moe-50 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
+              <div className="absolute right-8 top-8 opacity-90 group-hover:scale-105 transition-transform duration-300">
+                  {/* Decorative Illustration placeholder */}
+                  <div className="text-8xl">📁</div>
               </div>
 
-              <div className="relative z-10 flex justify-between items-end">
-                <div>
-                  <p className="text-gray-400 text-xs md:text-sm font-bold uppercase tracking-wide mb-2 flex items-center gap-2">
-                    <FolderIcon size={14} className="text-moe-primary"/>
-                    {currentFolderName}
-                  </p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-5xl md:text-7xl font-bold text-moe-text">{dueCount}</span>
-                    <span className="text-gray-400 md:text-lg font-medium">/ {totalCards} 张</span>
-                  </div>
-                  <div className="mt-2 text-xs text-moe-primary font-bold bg-moe-50 inline-block px-2 py-1 rounded-lg">
-                      点击管理卡片
-                  </div>
+              <div className="relative z-10">
+                <p className="text-gray-400 text-sm font-bold uppercase tracking-wide mb-3 flex items-center gap-2">
+                  <FolderIcon size={16} className="text-moe-primary"/>
+                  {currentFolderName}
+                </p>
+                <div className="flex items-baseline gap-3">
+                  <span className="text-7xl font-bold text-moe-text tracking-tight">{dueCount}</span>
+                  <span className="text-gray-400 text-xl font-bold">/ {totalCards} 张</span>
                 </div>
-                {dueCount === 0 && (
-                  <div className="text-4xl md:text-6xl animate-bounce">🎉</div>
-                )}
+                <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-moe-50 rounded-lg text-xs font-bold text-moe-primary group-hover:bg-moe-100 transition-colors">
+                    点击管理卡片
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column (Tablet): Action Grid */}
-          <div className="w-full md:w-7/12 mt-6 md:mt-0 flex flex-col h-full">
-             <div className="grid grid-cols-2 gap-4 h-full md:flex-1">
+          {/* Right Column: Actions */}
+          <div className="md:col-span-7 flex flex-col gap-4 h-full">
+             
+             {/* Top Row: Create Buttons */}
+             <div className="grid grid-cols-2 gap-4 flex-1 min-h-[160px]">
                 <button 
                   onClick={() => setShowCreateMenu(true)}
-                  className="aspect-square md:aspect-auto md:h-auto bg-[#ffe4e1] rounded-4xl p-4 flex flex-col items-center justify-center gap-3 text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden"
+                  className="bg-[#ffe4e1] rounded-[2.5rem] p-6 flex flex-col items-center justify-center gap-4 text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden h-full"
                 >
                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                  <div className="w-14 h-14 bg-white/60 rounded-2xl flex items-center justify-center shadow-sm relative z-10 group-hover:scale-110 transition-transform">
-                    <Plus size={28} className="text-[#ff9a9e]"/>
+                  <div className="w-16 h-16 bg-white/60 rounded-2xl flex items-center justify-center shadow-sm relative z-10 group-hover:scale-110 transition-transform">
+                    <Plus size={32} className="text-[#ff9a9e]"/>
                   </div>
-                  <span className="font-bold md:text-lg relative z-10">新建闪卡</span>
+                  <span className="font-bold text-lg relative z-10">新建闪卡</span>
                 </button>
 
                 <button 
                   onClick={() => onNavigate(ViewState.IMPORT)}
-                  className="aspect-square md:aspect-auto md:h-auto bg-[#e2f0cb] rounded-4xl p-4 flex flex-col items-center justify-center gap-3 text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden"
+                  className="bg-[#e2f0cb] rounded-[2.5rem] p-6 flex flex-col items-center justify-center gap-4 text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden h-full"
                 >
                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                  <div className="w-14 h-14 bg-white/60 rounded-2xl flex items-center justify-center shadow-sm relative z-10 group-hover:scale-110 transition-transform">
-                    <Sparkles size={28} className="text-[#88d8b0]"/>
+                  <div className="w-16 h-16 bg-white/60 rounded-2xl flex items-center justify-center shadow-sm relative z-10 group-hover:scale-110 transition-transform">
+                    <Sparkles size={32} className="text-[#88d8b0]"/>
                   </div>
-                  <span className="font-bold md:text-lg relative z-10">AI 导入</span>
+                  <span className="font-bold text-lg relative z-10">AI 导入</span>
                 </button>
+             </div>
 
-                <button 
-                  onClick={() => onNavigate(ViewState.REVIEW)}
-                  className="col-span-2 bg-[#c7ceea] rounded-4xl p-6 flex items-center justify-between text-moe-text hover:shadow-lg transition-all active:scale-95 md:h-auto md:flex-1 group relative overflow-hidden"
-                >
-                   <div className="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
-                  <div className="flex flex-col text-left justify-center h-full relative z-10">
-                    <span className="font-bold text-xl md:text-2xl mb-1">开始复习</span>
-                    <span className="text-sm opacity-70 md:text-base">
-                        {dueCount > 0 ? `还有 ${dueCount} 个单词等着你哦` : "复习完成！要再来一组吗？"}
-                    </span>
-                  </div>
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white/60 rounded-full flex items-center justify-center shadow-sm relative z-10 group-hover:rotate-12 transition-transform">
-                    <Play size={32} className="md:w-10 md:h-10 text-[#96a5d9] ml-1" fill="currentColor" />
-                  </div>
-                </button>
-            </div>
+             {/* Bottom Row: Review Button */}
+             <button 
+                onClick={() => onNavigate(ViewState.REVIEW)}
+                className="bg-[#c7ceea] rounded-[2.5rem] p-8 flex items-center justify-between text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden flex-1 min-h-[140px]"
+              >
+                 <div className="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                <div className="flex flex-col text-left justify-center h-full relative z-10">
+                  <span className="font-bold text-2xl mb-2">开始复习</span>
+                  <span className="text-base opacity-70 font-medium">
+                      {dueCount > 0 ? `还有 ${dueCount} 个单词等着你哦` : "复习完成！"}
+                  </span>
+                </div>
+                <div className="w-20 h-20 bg-white/60 rounded-full flex items-center justify-center shadow-sm relative z-10 group-hover:rotate-12 transition-transform hover:bg-white">
+                  <Play size={36} className="text-[#96a5d9] ml-1" fill="currentColor" />
+                </div>
+              </button>
           </div>
 
         </div>
