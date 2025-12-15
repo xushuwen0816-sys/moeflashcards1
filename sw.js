@@ -1,13 +1,18 @@
-// Safe Service Worker
-// This worker does NOT intercept network requests (fetch), preventing 404s caused by bad caching or auth headers.
-// It exists solely to satisfy PWA installation requirements.
+// This Service Worker is designed to UNREGISTER itself immediately.
+// This fixes the issue where an old SW might be intercepting requests and causing 404s.
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
+self.addEventListener('activate', () => {
+  // Force unregistration
+  self.registration.unregister()
+    .then(() => {
+      return self.clients.matchAll();
+    })
+    .then((clients) => {
+      // Force reload all open pages to ensure they use the network directly
+      clients.forEach((client) => client.navigate(client.url));
+    });
 });
-
-// No fetch listener = Direct Network Access

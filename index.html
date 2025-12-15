@@ -126,15 +126,13 @@
     <div id="root"></div>
     <script type="module" src="index.tsx"></script>
     <script>
-      // Clean up ALL Service Workers to fix 404/caching issues immediately
+      // 🚨 EMERGENCY CLEANUP: Unregister ALL Service Workers 🚨
+      // This ensures that no old sw.js is intercepting requests and causing 404s.
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
           for(let registration of registrations) {
-             registration.unregister().then(function() {
-                // Force reload if we unregister something to clear the cache
-                // window.location.reload(); 
-                // Commented out to avoid loop, but conceptually we want a clean slate
-             });
+             console.log('Unregistering SW:', registration);
+             registration.unregister();
           }
         });
       }
