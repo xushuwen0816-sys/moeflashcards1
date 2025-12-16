@@ -317,10 +317,10 @@ const HomeScreen: React.FC<{
 
   return (
     <div className="h-full overflow-y-auto no-scrollbar bg-moe-50 pb-safe">
-      <div className="p-6 md:p-8 w-full max-w-5xl mx-auto md:min-h-screen flex flex-col justify-center">
+      <div className="p-4 md:p-8 w-full max-w-5xl mx-auto md:min-h-screen flex flex-col justify-center">
         
         {/* Header - Always visible */}
-        <div className="flex justify-between items-start mb-8">
+        <div className="flex justify-between items-start mb-6 md:mb-8">
            {/* Mascot Dialogue Area */}
           <div className="flex items-start gap-4 flex-1">
              <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-md text-3xl flex-shrink-0 border-2 border-moe-50 z-10 relative">
@@ -343,17 +343,17 @@ const HomeScreen: React.FC<{
         </div>
 
         {/* Dashboard Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-stretch">
           
           {/* Left Column: Folders & Stats */}
-          <div className="md:col-span-5 flex flex-col gap-4">
+          <div className="md:col-span-5 flex flex-col gap-3 md:gap-4">
             {/* Folder Tabs */}
             <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
               {folders.map(folder => (
                 <button
                   key={folder.id}
                   onClick={() => onSwitchFolder(folder.id)}
-                  className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
+                  className={`flex-shrink-0 flex items-center px-3 py-1.5 md:px-4 md:py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${
                     currentFolderId === folder.id 
                       ? 'bg-moe-text text-white shadow-md' 
                       : 'bg-white/60 text-gray-500 hover:bg-white'
@@ -364,7 +364,7 @@ const HomeScreen: React.FC<{
               ))}
               <button 
                 onClick={() => setIsCreatingFolder(true)}
-                className="flex-shrink-0 px-3 py-2 rounded-xl bg-moe-100 text-moe-primary hover:bg-moe-200 transition-colors"
+                className="flex-shrink-0 flex items-center justify-center px-3 py-1.5 md:px-3 md:py-2 rounded-xl bg-moe-100 text-moe-primary hover:bg-moe-200 transition-colors"
               >
                 <FolderPlus size={18} />
               </button>
@@ -373,7 +373,7 @@ const HomeScreen: React.FC<{
             {/* Big Stats Card */}
             <div 
               onClick={() => onNavigate(ViewState.FOLDER_DETAIL)}
-              className="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-moe-100/50 relative overflow-hidden group cursor-pointer active:scale-95 transition-all h-full min-h-[280px] flex flex-col justify-end border-2 border-white hover:border-moe-100"
+              className="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-xl shadow-moe-100/50 relative overflow-hidden group cursor-pointer active:scale-95 transition-all h-full min-h-[200px] md:min-h-[280px] flex flex-col justify-end border-2 border-white hover:border-moe-100"
             >
               <div className="absolute -right-8 -top-8 w-48 h-48 bg-moe-50 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
               <div className="absolute right-8 top-8 opacity-90 group-hover:scale-105 transition-transform duration-300">
@@ -387,8 +387,8 @@ const HomeScreen: React.FC<{
                   {currentFolderName}
                 </p>
                 <div className="flex items-baseline gap-3">
-                  <span className="text-7xl font-bold text-moe-text tracking-tight">{dueCount}</span>
-                  <span className="text-gray-400 text-xl font-bold">/ {totalCards} 张</span>
+                  <span className="text-5xl md:text-7xl font-bold text-moe-text tracking-tight">{dueCount}</span>
+                  <span className="text-gray-400 text-lg md:text-xl font-bold">/ {totalCards} 张</span>
                 </div>
                 <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-moe-50 rounded-lg text-xs font-bold text-moe-primary group-hover:bg-moe-100 transition-colors">
                     点击管理卡片
@@ -398,47 +398,47 @@ const HomeScreen: React.FC<{
           </div>
 
           {/* Right Column: Actions */}
-          <div className="md:col-span-7 flex flex-col gap-4">
+          <div className="md:col-span-7 flex flex-col gap-3 md:gap-4">
              
-             {/* Top Row: Create Buttons - Fixed Height to prevent stretching */}
-             <div className="grid grid-cols-2 gap-4">
+             {/* Top Row: Create Buttons - Compact for Mobile, Standard for Desktop */}
+             <div className="grid grid-cols-2 gap-3 md:gap-4">
                 <button 
                   onClick={() => setShowCreateMenu(true)}
-                  className="bg-[#ffe4e1] rounded-[2.5rem] p-6 h-48 flex flex-col items-center justify-center gap-4 text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden"
+                  className="bg-[#ffe4e1] rounded-[2rem] md:rounded-[2.5rem] p-4 md:p-6 h-36 md:h-48 flex flex-col items-center justify-center gap-2 md:gap-4 text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden"
                 >
                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                  <div className="w-16 h-16 bg-white/60 rounded-2xl flex items-center justify-center shadow-sm relative z-10 group-hover:scale-110 transition-transform">
-                    <Plus size={32} className="text-[#ff9a9e]"/>
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-white/60 rounded-2xl flex items-center justify-center shadow-sm relative z-10 group-hover:scale-110 transition-transform">
+                    <Plus size={32} className="text-[#ff9a9e] scale-75 md:scale-100"/>
                   </div>
-                  <span className="font-bold text-lg relative z-10">新建闪卡</span>
+                  <span className="font-bold text-base md:text-lg relative z-10">新建闪卡</span>
                 </button>
 
                 <button 
                   onClick={() => onNavigate(ViewState.IMPORT)}
-                  className="bg-[#e2f0cb] rounded-[2.5rem] p-6 h-48 flex flex-col items-center justify-center gap-4 text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden"
+                  className="bg-[#e2f0cb] rounded-[2rem] md:rounded-[2.5rem] p-4 md:p-6 h-36 md:h-48 flex flex-col items-center justify-center gap-2 md:gap-4 text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden"
                 >
                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                  <div className="w-16 h-16 bg-white/60 rounded-2xl flex items-center justify-center shadow-sm relative z-10 group-hover:scale-110 transition-transform">
-                    <Sparkles size={32} className="text-[#88d8b0]"/>
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-white/60 rounded-2xl flex items-center justify-center shadow-sm relative z-10 group-hover:scale-110 transition-transform">
+                    <Sparkles size={32} className="text-[#88d8b0] scale-75 md:scale-100"/>
                   </div>
-                  <span className="font-bold text-lg relative z-10">AI 导入</span>
+                  <span className="font-bold text-base md:text-lg relative z-10">AI 导入</span>
                 </button>
              </div>
 
-             {/* Bottom Row: Review Button - Fixed Height to prevent stretching */}
+             {/* Bottom Row: Review Button */}
              <button 
                 onClick={() => onNavigate(ViewState.REVIEW)}
-                className="bg-[#c7ceea] rounded-[2.5rem] p-8 h-40 flex items-center justify-between text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden"
+                className="bg-[#c7ceea] rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 h-32 md:h-40 flex items-center justify-between text-moe-text hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden"
               >
                  <div className="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
                 <div className="flex flex-col text-left justify-center h-full relative z-10">
-                  <span className="font-bold text-3xl mb-2">开始复习</span>
-                  <span className="text-base opacity-70 font-medium">
+                  <span className="font-bold text-2xl md:text-3xl mb-1 md:mb-2">开始复习</span>
+                  <span className="text-sm md:text-base opacity-70 font-medium">
                       {dueCount > 0 ? `还有 ${dueCount} 个单词等着你哦` : "复习完成！要再来一组吗？"}
                   </span>
                 </div>
-                <div className="w-20 h-20 bg-white/60 rounded-full flex items-center justify-center shadow-sm relative z-10 group-hover:rotate-12 transition-transform hover:bg-white">
-                  <Play size={36} className="text-[#96a5d9] ml-1" fill="currentColor" />
+                <div className="w-14 h-14 md:w-20 md:h-20 bg-white/60 rounded-full flex items-center justify-center shadow-sm relative z-10 group-hover:rotate-12 transition-transform hover:bg-white">
+                  <Play size={36} className="text-[#96a5d9] ml-1 scale-75 md:scale-100" fill="currentColor" />
                 </div>
               </button>
           </div>
@@ -638,7 +638,7 @@ const FolderDetailScreen: React.FC<{
                   }
                   .word { font-size: 24px; font-weight: bold; color: #ff9a9e; margin-bottom: 8px; line-height: 1.2; }
                   .phonetic { font-family: 'Quicksand', monospace; color: #888; font-size: 14px; background: rgba(255, 228, 225, 0.5); padding: 4px 12px; border-radius: 12px; }
-                  .meaning { font-weight: bold; font-size: 16px; margin-bottom: 12px; color: #4a4a4a; line-height: 1.4; }
+                  .meaning { font-weight: bold; font-size: 16px; margin-bottom: 12px; color: #4a4a; line-height: 1.4; }
                   .example { font-size: 14px; color: #666; background: #fafafa; padding: 12px; border-radius: 12px; border-left: 3px solid #ffb7b2; }
                   .example .en { margin-bottom: 4px; line-height: 1.4; }
                   .example .cn { color: #999; font-size: 13px; }
