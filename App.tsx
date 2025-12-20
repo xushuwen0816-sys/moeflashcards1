@@ -559,18 +559,11 @@ const seedInitialData = (existingCards: Card[], existingFolders: Folder[]): { ca
     }
     
     // 3. Seed Basic Thai 2 Folder 
-    // (Logic omitted here for brevity in reasoning, but will be present in final output)
     if (!newFolders.some(f => f.id === BASIC_THAI_2_FOLDER_ID)) {
          const basicThai2Folder: Folder = { id: BASIC_THAI_2_FOLDER_ID, name: '基础泰语2', createdAt: Date.now() };
         newFolders.push(basicThai2Folder);
-        // ... Assuming the data is already in the file or I should re-add it.
-        // Since I can't copy-paste the huge blob easily without making this response massive, 
-        // I will use the provided seedInitialData logic from the prompt.
-    }
     
-    // Actually, to ensure the code works, I'll copy the provided logic from the prompt.
-    // ... (Re-inserting the large data arrays in the final output block below) ...
-    const rawData2 = [
+        const rawData2 = [
           ["กีฬา", "运动、体育运动", "/kii-laa/", "เขามักจะเล่น<b>กีฬา</b>ในตอนเย็น", "他经常在傍晚做运动。"],
           ["โป๊ะแตก", "穿帮、破裂、粉碎", "/pó-dtàek/", "ความลับของเขา<b>โป๊ะแตก</b>เสียแล้ว", "他的秘密穿帮了。"],
           ["หมอฟัน", "牙医", "/mɔ̌ɔ-fan/", "ฉันต้องไปหา<b>หมอฟัน</b>พรุ่งนี้", "我明天得去看牙医。"],
@@ -916,7 +909,7 @@ const seedInitialData = (existingCards: Card[], existingFolders: Folder[]): { ca
           ["รุ่ง", "明亮、灿烂", "/rûng/", "ขอให้ชีวิตคุณรุ่ง<b>รุ่ง</b>เรือง", "祝你的生活光明灿烂（明亮）。"],
           ["ดาว", "星星", "/daaw/", "มองดู<b>ดาว</b>บนท้องฟ้า", "看着天空中的星星。"],
           ["รุ้ง", "彩虹", "/rûng/", "หลังฝนตกจะมี<b>รุ้ง</b>กินน้ำ", "下雨后会有彩虹。"],
-          ["ท่อง", "背诵", "/thɔ̂ng/", "เด็กๆ <b>ท่อง</b>สูตรคูณ", "孩子们在背诵乘法表。"],
+          ["ท่อง", "背诵", "/thɔ̂ng/", "เด็กๆ <b>ท่อง</b>สูตรคูณ", "孩子们ใน背诵乘法表。"],
           ["ซ้ำๆ", "反复", "/sâm-sâm/", "อ่าน<b>ซ้ำๆ</b> จะได้จำได้", "反复地读，这样才能记住。"],
           ["คุย", "聊、交谈", "/khuy/", "เรามา<b>คุย</b>กันหน่อย", "我们聊一聊吧（交谈）。"],
           ["ด้วย", "用……", "/dûay/", "เขียน<b>ด้วย</b>ปากกาสีน้ำเงิน", "用（以……方式）蓝色钢笔写。"],
@@ -990,6 +983,7 @@ const seedInitialData = (existingCards: Card[], existingFolders: Folder[]): { ca
             easeFactor: 2.5
         }));
         newCards.push(...basic2Cards);
+    }
     
     // For this specific 'thought' block, I'll skip listing all data. 
     // In the XML output, I will strictly follow the "Full content of file" rule.
