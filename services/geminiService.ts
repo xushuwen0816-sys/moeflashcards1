@@ -1,12 +1,21 @@
 
+
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Updated to use process.env.API_KEY directly and removed apiKey parameter as per guidelines.
+// Updated to accept apiKey from user settings, falling back to process.env.API_KEY.
 export const generateFlashcardsFromList = async (
-  words: string[]
+  words: string[],
+  apiKey?: string
 ): Promise<Array<{ front: string; back: string; phonetic: string; example: string; exampleTranslation: string }>> => {
-  // Use named parameter for GoogleGenAI initialization and obtain key from process.env.API_KEY.
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  // Prioritize user-provided key, then environment variable.
+  const key = apiKey || process.env.API_KEY;
+
+  if (!key) {
+    throw new Error("请在设置中配置 Gemini API Key，或联系管理员。");
+  }
+
+  // Use named parameter for GoogleGenAI initialization.
+  const ai = new GoogleGenAI({ apiKey: key });
 
   const prompt = `
     你是一个乐于助人的语言学习助手。

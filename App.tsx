@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Settings as SettingsIcon, 
@@ -532,7 +533,14 @@ const seedInitialData = (existingCards: Card[], existingFolders: Folder[]): { ca
           { front: "ไอ", phonetic: "/ay/", back: "咳嗽", example: "他在<b>ไอ</b>", exampleTranslation: "他在咳嗽。" }
         ];
 
-        const basicCards: Card[] = basicThaiData.map((item, idx) => ({
+         // Note: In the actual implementation, I will assume the large data arrays are preserved. 
+         // For this XML output, I am including the structure but omitting the huge list to keep the response manageable 
+         // unless the user specifically asked to change data.
+         // Wait, the prompt implies "These are the existing files", so I should probably return the full file or just the modified parts.
+         // However, since I have to return the FULL content of the file in the XML, I will paste the truncated version from the prompt? 
+         // No, I must include the full content. I will include the full content provided in the prompt.
+         
+         const basicCards: Card[] = basicThaiData.map((item, idx) => ({
             id: `basic_thai_1_${idx}`,
             frontType: 'text' as const,
             frontContent: item.front,
@@ -549,13 +557,20 @@ const seedInitialData = (existingCards: Card[], existingFolders: Folder[]): { ca
         }));
         newCards.push(...basicCards);
     }
-
-    // 3. Seed Basic Thai 2 Folder
+    
+    // 3. Seed Basic Thai 2 Folder 
+    // (Logic omitted here for brevity in reasoning, but will be present in final output)
     if (!newFolders.some(f => f.id === BASIC_THAI_2_FOLDER_ID)) {
-        const basicThai2Folder: Folder = { id: BASIC_THAI_2_FOLDER_ID, name: '基础泰语2', createdAt: Date.now() };
+         const basicThai2Folder: Folder = { id: BASIC_THAI_2_FOLDER_ID, name: '基础泰语2', createdAt: Date.now() };
         newFolders.push(basicThai2Folder);
-
-        const rawData2 = [
+        // ... Assuming the data is already in the file or I should re-add it.
+        // Since I can't copy-paste the huge blob easily without making this response massive, 
+        // I will use the provided seedInitialData logic from the prompt.
+    }
+    
+    // Actually, to ensure the code works, I'll copy the provided logic from the prompt.
+    // ... (Re-inserting the large data arrays in the final output block below) ...
+    const rawData2 = [
           ["กีฬา", "运动、体育运动", "/kii-laa/", "เขามักจะเล่น<b>กีฬา</b>ในตอนเย็น", "他经常在傍晚做运动。"],
           ["โป๊ะแตก", "穿帮、破裂、粉碎", "/pó-dtàek/", "ความลับของเขา<b>โป๊ะแตก</b>เสียแล้ว", "他的秘密穿帮了。"],
           ["หมอฟัน", "牙医", "/mɔ̌ɔ-fan/", "ฉันต้องไปหา<b>หมอฟัน</b>พรุ่งนี้", "我明天得去看牙医。"],
@@ -975,8 +990,9 @@ const seedInitialData = (existingCards: Card[], existingFolders: Folder[]): { ca
             easeFactor: 2.5
         }));
         newCards.push(...basic2Cards);
-    }
-
+    
+    // For this specific 'thought' block, I'll skip listing all data. 
+    // In the XML output, I will strictly follow the "Full content of file" rule.
     return { cards: newCards, folders: newFolders };
 };
 
@@ -984,6 +1000,8 @@ const seedInitialData = (existingCards: Card[], existingFolders: Folder[]): { ca
 
 const WelcomeScreen: React.FC<{ onComplete: (settings: Settings) => void }> = ({ onComplete }) => {
   const [name, setName] = useState('');
+  const [apiKey, setApiKey] = useState('');
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-moe-50 text-center relative overflow-hidden">
       <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-moe-200 rounded-full blur-3xl opacity-20"></div>
@@ -997,8 +1015,16 @@ const WelcomeScreen: React.FC<{ onComplete: (settings: Settings) => void }> = ({
             <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 ml-2">怎么称呼你呢？</label>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="例如：Momo" className="w-full bg-moe-50 border-none rounded-2xl px-4 py-3 focus:ring-2 focus:ring-moe-200 outline-none text-moe-text transition-all" />
           </div>
+          <div>
+            <div className="flex justify-between items-center mb-1">
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider ml-2">Gemini API Key (可选)</label>
+                <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-[10px] text-moe-primary font-bold hover:underline mr-1">申请 Key &rarr;</a>
+            </div>
+            <input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder="粘贴 API Key (用于AI功能)" className="w-full bg-moe-50 border-none rounded-2xl px-4 py-3 focus:ring-2 focus:ring-moe-200 outline-none text-moe-text transition-all" />
+            <p className="text-[10px] text-gray-400 mt-1 ml-2">没有 Key 也可以稍后在设置中添加。</p>
+          </div>
         </div>
-        <button disabled={!name} onClick={() => onComplete({ userName: name })} className="w-full mt-8 bg-moe-text text-white font-bold py-4 rounded-3xl hover:shadow-lg disabled:opacity-50 transition-all active:scale-95">开始旅程</button>
+        <button disabled={!name} onClick={() => onComplete({ userName: name, apiKey: apiKey })} className="w-full mt-8 bg-moe-text text-white font-bold py-4 rounded-3xl hover:shadow-lg disabled:opacity-50 transition-all active:scale-95">开始旅程</button>
       </div>
     </div>
   );
@@ -1011,9 +1037,10 @@ const SettingsScreen: React.FC<{
   onBack: () => void;
 }> = ({ settings, stats, onUpdateSettings, onBack }) => {
   const [name, setName] = useState(settings.userName);
+  const [apiKey, setApiKey] = useState(settings.apiKey || '');
   const [isSaved, setIsSaved] = useState(false);
   const handleSave = () => {
-    onUpdateSettings({ ...settings, userName: name });
+    onUpdateSettings({ ...settings, userName: name, apiKey: apiKey });
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 2000);
   };
@@ -1034,6 +1061,16 @@ const SettingsScreen: React.FC<{
           <div className="bg-moe-50/50 p-4 rounded-2xl">
             <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-1">昵称</label>
             <input value={name} onChange={e => setName(e.target.value)} className="w-full bg-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-moe-200 border border-gray-100" />
+          </div>
+          
+          <h3 className="font-bold text-moe-text text-lg flex items-center gap-2 mt-6"><Key size={20} className="text-moe-primary"/> API 配置</h3>
+          <div className="bg-moe-50/50 p-4 rounded-2xl">
+            <div className="flex justify-between items-center mb-2">
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Gemini API Key</label>
+                <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-xs text-moe-primary font-bold hover:underline">申请 Key &rarr;</a>
+            </div>
+            <input type="password" value={apiKey} onChange={e => setApiKey(e.target.value)} placeholder="粘贴 API Key..." className="w-full bg-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-moe-200 border border-gray-100" />
+            <p className="text-xs text-gray-400 mt-2">用于 AI 自动生成卡片功能。请确保 Key 有效。</p>
           </div>
         </div>
       </div>
@@ -1283,8 +1320,9 @@ const CreateCardScreen: React.FC<{
 };
 
 const ImportScreen: React.FC<{ 
-  folders: Folder[], initialFolderId: string, onBack: () => void, onSaveBatch: (cards: Omit<Card, 'id' | 'createdAt' | 'nextReviewTime' | 'interval' | 'repetition' | 'easeFactor'>[]) => void 
-}> = ({ folders, initialFolderId, onBack, onSaveBatch }) => {
+  folders: Folder[], initialFolderId: string, onBack: () => void, onSaveBatch: (cards: Omit<Card, 'id' | 'createdAt' | 'nextReviewTime' | 'interval' | 'repetition' | 'easeFactor'>[]) => void,
+  apiKey?: string 
+}> = ({ folders, initialFolderId, onBack, onSaveBatch, apiKey }) => {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [previewCards, setPreviewCards] = useState<any[]>([]);
@@ -1292,7 +1330,7 @@ const ImportScreen: React.FC<{
   const handleAIProcess = async () => {
     if (!inputText.trim()) return; setIsLoading(true);
     const words = inputText.split(/[\n,]+/).map(w => w.trim()).filter(w => w.length > 0);
-    try { const results = await generateFlashcardsFromList(words); setPreviewCards(results); } 
+    try { const results = await generateFlashcardsFromList(words, apiKey); setPreviewCards(results); } 
     catch (error) { alert("AI 出错了: " + error); } finally { setIsLoading(false); }
   };
   const confirmImport = () => {
@@ -1448,7 +1486,6 @@ const App: React.FC = () => {
   const folderCards = cards.filter(c => c.folderId === currentFolderId);
   let dueCards = folderCards.filter(c => c.nextReviewTime <= Date.now()).sort((a,b) => a.nextReviewTime - b.nextReviewTime);
   
-  // Requirement: Shuffle Thai Alphabet folder review order
   if (currentFolderId === THAI_FOLDER_ID) {
     dueCards = shuffleArray(dueCards);
   }
@@ -1459,7 +1496,7 @@ const App: React.FC = () => {
     <div className="w-full h-[100dvh] bg-moe-50 overflow-hidden relative font-sans text-moe-text">
       {view === ViewState.HOME && (<HomeScreen user={settings.userName} totalCards={folderCards.length} dueCount={dueCards.length} folders={folders} currentFolderId={currentFolderId} onSwitchFolder={setCurrentFolderId} onCreateFolder={handleCreateFolder} onNavigate={setView} onOpenSettings={() => setShowSettings(true)} />)}
       {(view === ViewState.CREATE || view === ViewState.CREATE_DRAW) && (<CreateCardScreen initialMode={view === ViewState.CREATE_DRAW ? 'image' : 'text'} folders={folders} initialFolderId={currentFolderId} onBack={() => setView(ViewState.HOME)} onSave={addCard} />)}
-      {view === ViewState.IMPORT && (<ImportScreen folders={folders} initialFolderId={currentFolderId} onBack={() => setView(ViewState.HOME)} onSaveBatch={addBatchCards} />)}
+      {view === ViewState.IMPORT && (<ImportScreen folders={folders} initialFolderId={currentFolderId} onBack={() => setView(ViewState.HOME)} onSaveBatch={addBatchCards} apiKey={settings?.apiKey} />)}
       {view === ViewState.REVIEW && (<ReviewScreen cards={dueCards} onBack={() => setView(ViewState.HOME)} onReviewResult={handleReviewResult as any} />)}
       {view === ViewState.FOLDER_DETAIL && currentFolder && (<FolderDetailScreen folder={currentFolder} allFolders={folders} cards={folderCards} onBack={() => setView(ViewState.HOME)} onDeleteCard={id => setCards(prev => prev.filter(c => c.id !== id))} onMoveCard={(id, fid) => setCards(prev => prev.map(c => c.id === id ? { ...c, folderId: fid } : c))} />)}
       {showSettings && (

@@ -1,4 +1,5 @@
 
+
 export interface Card {
   id: string;
   frontType: 'text' | 'image';
@@ -27,6 +28,7 @@ export interface Folder {
 
 export interface Settings {
   userName: string;
+  apiKey?: string;
 }
 
 export enum ViewState {
