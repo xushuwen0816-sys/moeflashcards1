@@ -1,3 +1,4 @@
+
 export interface Card {
   id: string;
   frontType: 'text' | 'image';
@@ -25,8 +26,6 @@ export interface Folder {
 }
 
 export interface Settings {
-  apiKey: string;
-  provider: 'google' | 'siliconflow';
   userName: string;
 }
 

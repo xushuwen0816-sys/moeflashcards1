@@ -1,12 +1,12 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
 
+// Updated to use process.env.API_KEY directly and removed apiKey parameter as per guidelines.
 export const generateFlashcardsFromList = async (
-  apiKey: string, 
   words: string[]
 ): Promise<Array<{ front: string; back: string; phonetic: string; example: string; exampleTranslation: string }>> => {
-  if (!apiKey) throw new Error("API Key is missing");
-
-  const ai = new GoogleGenAI({ apiKey });
+  // Use named parameter for GoogleGenAI initialization and obtain key from process.env.API_KEY.
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   const prompt = `
     你是一个乐于助人的语言学习助手。
@@ -23,7 +23,8 @@ export const generateFlashcardsFromList = async (
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      // Using 'gemini-3-flash-preview' for basic text tasks.
+      model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -44,8 +45,9 @@ export const generateFlashcardsFromList = async (
       }
     });
 
+    // Access the text property directly on the response object (not as a function).
     if (response.text) {
-      return JSON.parse(response.text);
+      return JSON.parse(response.text.trim());
     }
     return [];
   } catch (error) {
