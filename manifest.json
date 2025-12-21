@@ -11,12 +11,12 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/6331/6331337.png",
+      "src": "https://images.weserv.nl/?url=cdn-icons-png.flaticon.com/512/6331/6331337.png&w=192&h=192&output=png&bg=fff0f5",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/6331/6331337.png",
+      "src": "https://images.weserv.nl/?url=cdn-icons-png.flaticon.com/512/6331/6331337.png&w=512&h=512&output=png&bg=fff0f5",
       "sizes": "512x512",
       "type": "image/png"
     }
